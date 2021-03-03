@@ -1,0 +1,20 @@
+
+services:
+  - docker
+
+# Pre-testing installs
+install:
+  - echo "Nothing to be installed"
+
+# Scripts to be run such as tests
+before_script:
+ - echo "no tests"
+
+script:
+  - docker --version 
+  - docker build -t udagram-nginx .
+  - docker tag udagram-nginx malcolmkz/udagram-nginx:latest
+
+after_success:
+  - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+  - docker push malcolmkz/udagram-nginx
